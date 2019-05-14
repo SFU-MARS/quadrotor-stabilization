@@ -1,0 +1,26 @@
+<launch>
+	
+	<!-- this part is for world launching --> 
+	<arg name="world_file" default="worlds/empty.world"/>
+	<arg name="gui" default="true"/>
+	
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		 <arg name="use_sim_time" default="true"/>
+		 <arg name="debug" value="false"/>
+		 <arg name="gui" value="$(arg gui)" />
+		 <arg name="world_name" value="$(arg world_file)" />
+		 <arg name="paused" default="true"/>		 
+		 <arg name="headless" default="false"/>
+	</include>
+
+
+	<!-- start spawning obstacles -->
+	<param name="obst_1" command="$(find xacro)/xacro.py --inorder ./obstacle_1.urdf.xacro"/>
+	<param name="obst_2" command="$(find xacro)/xacro.py --inorder ./obstacle_2.urdf.xacro"/>
+	
+	<node name="spawn_obst_1" pkg="gazebo_ros" type="spawn_model" args="-param obst_1 -urdf -x 5 -y 0 -z 10 -model obstacle_1" output="screen"> </node>
+	
+	<node name="spawn_obst_2" pkg="gazebo_ros" type="spawn_model" args="-param obst_2 -urdf -x -5 -y 0 -z 10 -model obstacle_2" output="screen"> </node>
+
+
+</launch>
