@@ -21,15 +21,20 @@ class rand_obstacle(object):
 		self.loc = (x,z)
 		self.size = size
 	
+	def get_size(self):
+		return self.size
+
+	def get_loc(self):
+		return self.loc
 
 def check_distance(obst1, obst2):
 	offset = 0.1
-	if np.sqrt(np.square((obst1.loc[0] - obst2.loc[0])) + np.square(obst1.loc[1] - obst2.loc[1])) >= obst1.size * np.sqrt(2) / 2 + obst2.size * np.sqrt(2) / 2 + offset:
+	if np.sqrt(np.square((obst1.get_loc()[0] - obst2.get_loc()[0])) + np.square(obst1.get_loc()[1] - obst2.get_loc()[1])) >= obst1.get_size() * np.sqrt(2) / 2 + obst2.get_size() * np.sqrt(2) / 2 + offset:
 		return True
 	else:
 		return False
 
-def spawn_obstacles(num, size, rg):
+def gen_obstacles(num, size, rg):
 	# rg = [-5,5]
 	# num: number of obstacles
 	# size: integer 
@@ -48,63 +53,103 @@ def spawn_obstacles(num, size, rg):
 
 		else:
 			break
+
+	return obsts
+
+def spawn_objects(objects, srv):
+	assert len(objects) > 0
 	
-	for i in range(len(obsts)):
-		print("obstacle locs:", obsts[i].loc)
+	obj_states = []
 
-
-
+	for obj in objects:
+		pose = Pose()
+		pose.position.x = obj.get_loc()[0]
+		pose.position.y = 0
+		pose.position.z = obj.get_loc()[1]
+		pose.orientation.x = 0
+		pose.orientation.y = 0
+		pose.orientation.z = 0
+		pose.orientation.w = 0
+		
+		obj_state = ModelState()
+		obj_state.model_name = "obstacle_" + str(objects.index(obj)+1)
+		obj_state.pose = pose
+		obj_states.append(obj_state)
 	
+	return obj_states
+
+
+#if __name__ == "__main__":
+#	spawn_obstacles(num=3, size=0.5, rg=[-5,5])	
+
 if __name__ == "__main__":
 	# You have to initialize node at first when using rospy.
 	# the node name could be set as you wish. 
 	# Actually the node here means your own code file
 	
-#	rospy.init_node("random_spawn", anonymous=True, log_level=rospy.INFO)
-#	print("rospy node names:", rospy.get_namespace())	
-#	srv_unpause = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-#	print("do I get here??")
-#	srv_pause = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-#	srv_reset_proxy = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
-#	srv_spawn_model = rospy.ServiceProxy('/gazebo/spawn_model', SpawnModel)
-#	srv_get_model_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-#	srv_set_model_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
-#	
-#	rospy.wait_for_service('/gazebo/reset_simulation')
-#
-#	print("do I get here??")
-#	try:
-#		srv_reset_proxy()
-#		# use time.sleep instead rospy.sleep in case of any time backward exceptions
-#		time.sleep(5.)
-#
-#
-#		pose = Pose()
-#		pose.position.x = 5
-#		pose.position.y = 5
-#		pose.position.z = 5
-#
-#		pose.orientation.x = 0
-#		pose.orientation.y = 0
-#		pose.orientation.z = 0
-#		pose.orientation.w = 0
-#	
-#		obst_state = ModelState()
-#		obst_state.model_name = "obstacle_1"
-#		obst_state.pose = pose
-#		srv_set_model_state(obst_state)
-#
-#	except rospy.ServiceException as serv_e:
-#		print("# Resets the state of the environment and returns an initial observation.")
-#	
-#	# Unpause simulation to make observation
-#	rospy.wait_for_service('/gazebo/unpause_physics')
-#	try:
-#		srv_unpause()
-#	except rospy.ServiceException as e:
-#		print("/gazebo/unpause_physics service call failed")
+	rospy.init_node("random_spawn", anonymous=True, log_level=rospy.INFO)
+	print("rospy node names:", rospy.get_namespace())	
+	srv_unpause = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+	print("do I get here??")
+	srv_pause = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+	srv_reset_proxy = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
+	srv_spawn_model = rospy.ServiceProxy('/gazebo/spawn_model', SpawnModel)
+	srv_get_model_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
+	srv_set_model_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
 	
-#	print("random spawning obstacles success!!!")
+	rospy.wait_for_service('/gazebo/reset_simulation')
+
+	print("do I get here??")
+	try:
+		srv_reset_proxy()
+
+		# Do randomly spawning obstacles multiple times
+		N = 10
+		idx = 0
+		while idx <= N:
+
+			# use time.sleep instead rospy.sleep in case of any time backward exceptions
+			time.sleep(5.)
+
+			rospy.wait_for_service('/gazebo/pause_physics')
+			try:
+				srv_pause()
+			except rospy.ServiceException as e:
+				print("/gazebo/pause_physics service call failed")
+			
+			# generate a few obstacles 			
+			objs = gen_obstacles(num=3, size=0.5, rg=[-5,5])
+			print(objs)
+			
+			# retrieve spawning info 
+			objs_st = spawn_objects(objs, srv_set_model_state)
+			
+			print(objs_st)
+			idx += 1
+ 			
+			# spawn objects using ros service
+			for ost in objs_st:
+				time.sleep(0.05)
+				srv_set_model_state(ost)
+				
+
+			rospy.wait_for_service('/gazebo/unpause_physics')
+			try:
+				srv_unpause()
+			except rospy.ServiceException as e:
+				print("/gazebo/unpause_physics service call failed") 
+
+	except rospy.ServiceException as serv_e:
+		print("# Resets the state of the environment and returns an initial observation.")
+	
+	# Unpause simulation to make observation
+	rospy.wait_for_service('/gazebo/unpause_physics')
+	try:
+		srv_unpause()
+	except rospy.ServiceException as e:
+		print("/gazebo/unpause_physics service call failed")
+ 
+	print("random spawning obstacles success!!!")
 
 
-	spawn_obstacles(num=3, size=0.5, rg=[-5,5])
+
