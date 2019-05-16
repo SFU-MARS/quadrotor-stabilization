@@ -15,14 +15,14 @@
 
 
 	<!-- start spawning obstacles -->
-	<param name="obst_1" command="$(find xacro)/xacro.py --inorder ./obstacle_1.urdf.xacro"/>
-	<param name="obst_2" command="$(find xacro)/xacro.py --inorder ./obstacle_2.urdf.xacro"/>
-	<param name="obst_3" command="$(find xacro)/xacro.py --inorder ./obstacle_3.urdf.xacro"/>
+	<param name="obst_1" command="$(find xacro)/xacro.py --inorder urdf/obstacle_1.urdf.xacro"/>
+	<param name="obst_2" command="$(find xacro)/xacro.py --inorder urdf/obstacle_2.urdf.xacro"/>
+	<param name="obst_3" command="$(find xacro)/xacro.py --inorder urdf/obstacle_3.urdf.xacro"/>
 
 	<node name="spawn_obst_1" pkg="gazebo_ros" type="spawn_model" args="-param obst_1 -urdf -x 5 -y 0 -z 10 -model obstacle_1" output="screen"> </node>
 	
 	<node name="spawn_obst_2" pkg="gazebo_ros" type="spawn_model" args="-param obst_2 -urdf -x -5 -y 0 -z 10 -model obstacle_2" output="screen"> </node>
 
-	<node name="spawn_obst_3" pkg="gazebo_ros" type="spawn_model" args="-param obst_3 -urdf -x -5 -y 5 -z 3 -model obstacle_3" output="screen"> </node>
+	<node name="spawn_obst_3" pkg="gazebo_ros" type="spawn_model" args="-param obst_3 -urdf -x -5 -y 0 -z 3 -model obstacle_3" output="screen"> </node>
 
 </launch>
