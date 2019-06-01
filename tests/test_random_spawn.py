@@ -83,18 +83,22 @@ def gen_obstacles(num, size, rg):
 	goal  = Goal(GOAL_SIZE, GOAL_LOC)
 
 	while True:
-		tmp_obst = RandObstacle(size, rg)
-		flag = True
-		if len(obsts) >= 0 and len(obsts) < num:
-			for j in range(len(obsts)):
-				if not check_distance(obsts[j], tmp_obst) or not check_distance(start, tmp_obst) or not check_distance(goal, tmp_obst):
-					flag = False
-					break
-			if flag:
-				obsts.append(tmp_obst)
-
+		if len(obsts) < num:	
+			tmp_obst = RandObstacle(size, rg)
+			flag = True
+			if not check_distance(start, tmp_obst) or not check_distance(goal, tmp_obst):
+				continue
+			else:
+				for j in range(len(obsts)):
+					if not check_distance(obsts[j], tmp_obst):
+						flag = False
+						break
+				
+				if flag:
+					obsts.append(tmp_obst)
 		else:
 			break
+
 
 	return obsts
 
@@ -187,6 +191,8 @@ if __name__ == "__main__":
 			# generate a few obstacles 			
 			obsts = gen_obstacles(num=OBST_NUM, size=OBST_SIZE, rg=RG)
 			print(obsts)
+			for o in obsts:
+				print("pos:",(o.get_loc()[0], o.get_loc()[2]))
 			
 			# retrieve spawning info 
 			obsts_st = spawn_obstacles(obsts)
