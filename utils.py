@@ -19,7 +19,7 @@ import numpy as np
 L = 0.65
 
 # coordinate transform from board frame to world frame
-def board_to_world(board_coord, pitch, roll, yaw):
+def board_to_world(board_coord, roll, pitch, yaw):
 
 	Rx = np.array([[1, 0, 0],
 	               [0, np.cos(roll), -np.sin(roll)],
@@ -56,7 +56,7 @@ def init_quad(srv):
 	srv(quad_state) 
 	return True
 
-def apply_force_to_quad(srv, action, roll, pitch, yaw):
+def apply_wrench_to_quad(srv, action, roll, pitch, yaw):
 
 	# pitch, roll, yaw is the relative motion between two frame
 
@@ -64,21 +64,24 @@ def apply_force_to_quad(srv, action, roll, pitch, yaw):
 	wrench_UL, wrench_UR, wrench_LL, wrench_LR = Wrench(), Wrench(), Wrench(), Wrench()
 
 	# apply linear force
-	wrench_UL.force.x, wrench_UL.force.y, wrench_UL.force.z = board_to_world(np.array([0,0,action[0]]), pitch=pitch, roll=roll, yaw=yaw)
-	wrench_UR.force.x, wrench_UR.force.y, wrench_UR.force.z = board_to_world(np.array([0,0,action[1]]), pitch=pitch, roll=roll, yaw=yaw)
-	wrench_LL.force.x, wrench_LL.force.y, wrench_LL.force.z = board_to_world(np.array([0,0,action[2]]), pitch=pitch, roll=roll, yaw=yaw)	
-	wrench_LR.force.x, wrench_LR.force.y, wrench_LR.force.z = board_to_world(np.array([0,0,action[3]]), pitch=pitch, roll=roll, yaw=yaw)
+	wrench_UL.force.x, wrench_UL.force.y, wrench_UL.force.z = board_to_world(np.array([0,0,action[0]]), roll=roll, pitch=pitch, yaw=yaw)
+	wrench_UR.force.x, wrench_UR.force.y, wrench_UR.force.z = board_to_world(np.array([0,0,action[1]]), roll=roll, pitch=pitch, yaw=yaw)
+	wrench_LL.force.x, wrench_LL.force.y, wrench_LL.force.z = board_to_world(np.array([0,0,action[2]]), roll=roll, pitch=pitch, yaw=yaw)	
+	wrench_LR.force.x, wrench_LR.force.y, wrench_LR.force.z = board_to_world(np.array([0,0,action[3]]), roll=roll, pitch=pitch, yaw=yaw)
 
 	# apply torque
-	wrench_UL.torque.x, wrench_UL.torque.y, wrench_UL.torque.z = board_to_world(np.array([action[0]*L*np.sqrt(2)/2, action[0]*L*np.sqrt(2)/2, 0]), pitch=pitch, roll=roll, yaw=yaw)
-	wrench_UR.torque.x, wrench_UR.torque.y, wrench_UR.torque.z = board_to_world(np.array([action[1]*L*np.sqrt(2)/2, -action[1]*L*np.sqrt(2)/2, 0]), pitch=pitch, roll=roll, yaw=yaw)
-	wrench_LL.torque.x, wrench_LL.torque.y, wrench_LL.torque.z = board_to_world(np.array([-action[2]*L*np.sqrt(2)/2, action[2]*L*np.sqrt(2)/2, 0]), pitch=pitch, roll=roll, yaw=yaw)
-	wrench_LR.torque.x, wrench_LR.torque.y, wrench_LR.torque.z = board_to_world(np.array([-action[3]*L*np.sqrt(2)/2, -action[3]*L*np.sqrt(2)/2, 0]), pitch=pitch, roll=roll, yaw=yaw)
+	wrench_UL.torque.x, wrench_UL.torque.y, wrench_UL.torque.z = board_to_world(np.array([action[0]*L*np.sqrt(2)/2, action[0]*L*np.sqrt(2)/2, 0]), roll=roll, pitch=pitch, yaw=yaw)
+	wrench_UR.torque.x, wrench_UR.torque.y, wrench_UR.torque.z = board_to_world(np.array([action[1]*L*np.sqrt(2)/2, -action[1]*L*np.sqrt(2)/2, 0]), roll=roll, pitch=pitch, yaw=yaw)
+	wrench_LL.torque.x, wrench_LL.torque.y, wrench_LL.torque.z = board_to_world(np.array([-action[2]*L*np.sqrt(2)/2, action[2]*L*np.sqrt(2)/2, 0]), roll=roll, pitch=pitch, yaw=yaw)
+	wrench_LR.torque.x, wrench_LR.torque.y, wrench_LR.torque.z = board_to_world(np.array([-action[3]*L*np.sqrt(2)/2, -action[3]*L*np.sqrt(2)/2, 0]), roll=roll, pitch=pitch, yaw=yaw)
 
+	# Actually we need combine all four motors effect into one
 	wrench = Wrench()
+	# apply to force
 	wrench.force.x = wrench_UL.force.x + wrench_UR.force.x + wrench_LL.force.x + wrench_LR.force.x
 	wrench.force.y = wrench_UL.force.y + wrench_UR.force.y + wrench_LL.force.y + wrench_LR.force.y
 	wrench.force.z = wrench_UL.force.z + wrench_UR.force.z + wrench_LL.force.z + wrench_LR.force.z
+	# apply to torque
 	wrench.torque.x = wrench_UL.torque.x + wrench_UR.torque.x + wrench_LL.torque.x + wrench_LR.torque.x
 	wrench.torque.y = wrench_UL.torque.y + wrench_UR.torque.y + wrench_LL.torque.y + wrench_LR.torque.y
 	wrench.torque.z = wrench_UL.torque.z + wrench_UR.torque.z + wrench_LL.torque.z + wrench_LR.torque.z

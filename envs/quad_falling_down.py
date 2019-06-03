@@ -17,6 +17,9 @@ from gazebo_msgs.srv import SetModelState
 from gazebo_msgs.srv import ApplyBodyWrench
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
+
+from utils import board_to_world, init_quad, apply_wrench_to_quad
+
 class QuadFallingDown(Env):
 	def __init__(self):
 		# Note: need to be compatible with the quadrotor.urdf
@@ -94,7 +97,7 @@ class QuadFallingDown(Env):
 		try:
 			self.pause()
 		except rospy.ServiceException as e:
-			print("/gazebo/pause_physics service call failed")
+			print("/gazebo/pause_physics service call failed!")
 
 		obsrv = self.get_obsrv(dynamic_data)
 		self.pre_obsrv = obsrv
@@ -102,6 +105,69 @@ class QuadFallingDown(Env):
 		return obsrv
 
 
+	
+	
+	def step(self, action):
+		# action is 4-dims representing drone's four thrusts
+		if sum(np.isnan(action)) > 0:
+			raise ValueError("Passed in nan to step! Action: " + str(action))
+
+		pre_roll = self.pre_obsrv[4]
+		pre_pitch = self.pre_obsrv[5]
+		pre_yaw = self.pre_obsrv[6]
+		
+		# Note: may require clipping if using Gaussian distribution as action model
+		rospy.wait_for_service('/gazebo/apply_body_wrench')
+		_ = apply_wrench_to_quad(self.apply_wrench, pre_roll, pre_pitch, pre_yaw)
+	
+		# run simulator to collect data
+		rospy.wait_for_service('/gazebo/unpause_physics')
+		try:
+			self.unpause()
+		except rospy.ServiceException as e:
+			print("/gazebo/unpause_physics service call failed")
+		
+
+		dynamic_data = None
+		while dynamic_data is None:
+				rospy.wait_for_service('/gazebo/get_model_state')
+				try:
+					dynamic_data = self.get_model_state(model_name="quadrotor")
+				except rospy.ServiceException as e:
+					print("/gazebo/get_model_state service call failed!")
+		
+		rospy.wait_for_service('/gazebo/pause_physics')
+		try:
+			self.pause()
+		except rospy.ServiceException as e:
+			print("/gazebo/pause_physics service call failed")
+
+		obsrv = self.get_obsrv(dynamic_data)
+		self.pre_obsrv = obsrv
+
+
+		reward = 0
+
+		if self.reward_type == 'sparse':
+			reward = 0
+		elif self.reward_type == 'ttr':
+			ttr = self.brsEngine.evaluate_ttr(obsrv)
+			reward = -ttr
+		else:
+			pass
+
+		done = False
+		
+		if self.in_obst():
+			reward += collision_reward
+			done = True
+
+		if self.in_goal(obsrv):
+			reward += goal_reward
+			done = True
+		
+		return np.asarray(obsrv), reward, done, {}
+				
 	def get_obsrv(self, dynamic_data)
 		# we don't include any state variables w.r.t 2D positions (x,y)
 		z = dynamic_data.pose.position.z
@@ -121,28 +187,15 @@ class QuadFallingDown(Env):
 		roll, pitch, yaw = euler_from_quaternion([ox, oy, oz, ow])
 		
 		return np.array([z, vx, vy, vz, roll, pitch, yaw, roll_w, pitch_w, yaw_w])
-		
 	
-	def step(self, action):
-		# action is 4-dims representing drone's four thrusts
-		if sum(np.isnan(action)) > 0:
-			raise ValueError("Passed in nan to step! Action: " + str(action))
+	def	in_obst(self):
+		# Not implemented ...
+		pass
 
-		pre_roll = self.pre_obsrv[4]
-		pre_pitch = self.pre_obsrv[5]
-		pre_yaw = self.pre_obsrv[6]
-
-
+	def in_goal(self, obsrv):
+		# Not implemented
+		pass
 		
-		
-		rospy.wait_for_service('/gazebo/unpause_physics')
-		try:
-			self.unpause()
-		except rospy.ServiceException as e:
-			print("/gazebo/unpause_physics service call failed")
-		
-		
-
 	# observation space: [z,vx,vy,vz,roll,pitch,yaw,roll_rate,pitch_rate,yaw_rate]
 	@property
 	def observation_space(self):
