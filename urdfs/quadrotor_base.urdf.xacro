@@ -12,7 +12,7 @@
                 <inertia ixx="2.3951e-5" ixy="0.0" ixz="0.0" iyy="2.3951e-5" iyz="0.0" izz="2.3951e-5"/>
             </inertial>
 
-            <visual name="visual">
+            <visual name="base_link_visual">
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
 									 <mesh filename="package://crazyflie_description/meshes/crazyflie2.dae" scale="10 10 10"/>
@@ -20,14 +20,28 @@
 							</geometry>
             </visual>
 
-            <collision name="collision">
+            <collision name="base_link_collision">
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
                     <box size=".92 .92 .29" />
                 </geometry>
             </collision>
         </link>
-
+		
+				<gazebo reference="base_link">
+					<sensor name="quad_contact_sensor" type="contact">
+						<always_on>true</always_on>
+						<update_rate>30.0</update_rate>
+						<visualize>true</visualize>
+						<contact>
+							<collision>base_link_collision_collision</collision>
+						</contact>
+						<plugin name="gazebo_ros_bumper_plugin" filename="libgazebo_ros_bumper.so">
+							<bumperTopicName>gazebo_ros_bumper</bumperTopicName>
+							<frameName>world</frameName>
+						</plugin>
+					</sensor>
+				</gazebo>
 
     <!-- Hokuyo UTM-30LX sensor -->
     <!--<xacro:include filename="$(find hector_sensors_description)/urdf/hokuyo_utm30lx.urdf.xacro" />-->
