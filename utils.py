@@ -9,6 +9,7 @@ from gazebo_msgs.srv import SetModelState
 from gazebo_msgs.srv import SpawnModel
 from gazebo_msgs.srv import ApplyBodyWrench
 
+from tf.transformations import quaternion_from_euler
 import rospy
 import time
 import numpy as np
@@ -44,10 +45,11 @@ def init_quad(srv):
 	quad_pose.position.y = 0
 	quad_pose.position.z = 3
 
-	quad_pose.orientation.x = 0
-	quad_pose.orientation.y = 0
-	quad_pose.orientation.z = 0
-	quad_pose.orientation.w = 0
+	qu_x, qu_y, qu_z, qu_w = quaternion_from_euler(0, np.pi/2, 0)
+	quad_pose.orientation.x = qu_x
+	quad_pose.orientation.y = qu_y
+	quad_pose.orientation.z = qu_z
+	quad_pose.orientation.w = qu_w
 
 	quad_state = ModelState()
 	quad_state.model_name = "quadrotor"
@@ -92,38 +94,38 @@ def apply_wrench_to_quad(srv, action, roll, pitch, yaw):
 	return True
 
 # test random falling down task
-# if __name__ == "__main__":
-# 	# You have to initialize node at first when using rospy.
-# 	# the node name could be set as you wish. 
-# 	# Actually the node here means your own code file
-# 	rospy.init_node("random_falling", anonymous=True, log_level=rospy.INFO)
-# 	srv_unpause = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-# 	srv_pause = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-# 	srv_reset_proxy = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
-# 	srv_spawn_model = rospy.ServiceProxy('/gazebo/spawn_model', SpawnModel)
-# 	srv_get_model_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-# 	srv_set_model_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
-# 	srv_apply_force = rospy.ServiceProxy('/gazebo/apply_body_wrench', ApplyBodyWrench)
-# 
-# 	rospy.wait_for_service('/gazebo/reset_simulation')
-# 	print("do I get here??")
-# 	try:
-# 		srv_reset_proxy()
-# 
-# 		time.sleep(3)
-# 		init_quad(srv_set_model_state)
-# 
-# 		time.sleep(3)
-# 		apply_force_to_quad(srv_apply_force, [0.4,0.3,0.3,0.3], roll=0, pitch=np.pi/8, yaw=0)
-# 	except rospy.ServiceException as e:
-# 		print("# Reset simulation failed!")
-# 	
-# 	# Unpause simulation to make observation
-# 	rospy.wait_for_service('/gazebo/unpause_physics')
-# 	try:
-# 		srv_unpause()
-# 	except rospy.ServiceException as e:
-# 		print("/gazebo/unpause_physics service call failed")
+if __name__ == "__main__":
+ 	# You have to initialize node at first when using rospy.
+ 	# the node name could be set as you wish. 
+ 	# Actually the node here means your own code file
+ 	rospy.init_node("random_falling", anonymous=True, log_level=rospy.INFO)
+ 	srv_unpause = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+ 	srv_pause = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+ 	srv_reset_proxy = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
+ 	srv_spawn_model = rospy.ServiceProxy('/gazebo/spawn_model', SpawnModel)
+ 	srv_get_model_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
+ 	srv_set_model_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+ 	srv_apply_wrench = rospy.ServiceProxy('/gazebo/apply_body_wrench', ApplyBodyWrench)
+ 
+ 	rospy.wait_for_service('/gazebo/reset_simulation')
+ 	print("do I get here??")
+ 	try:
+ 		srv_reset_proxy()
+ 
+ 		time.sleep(3)
+ 		init_quad(srv_set_model_state)
+ 
+ 		time.sleep(3)
+ 		apply_wrench_to_quad(srv_apply_wrench, [0.1,0.1,0.1,0.1], roll=0, pitch=np.pi/2, yaw=0)
+ 	except rospy.ServiceException as e:
+ 		print("# Reset simulation failed!")
+ 	
+ 	# Unpause simulation to make observation
+ 	rospy.wait_for_service('/gazebo/unpause_physics')
+ 	try:
+ 		srv_unpause()
+ 	except rospy.ServiceException as e:
+ 		print("/gazebo/unpause_physics service call failed")
 		
 		
 

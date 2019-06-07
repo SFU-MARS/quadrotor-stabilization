@@ -2,13 +2,13 @@
 
 from pre_maml.envs.quad_falling_down import QuadFallingDown
 
-from garage.envs.normalized_env import normalize
-from garage.np.baselines.linear_feature_baseline import LinearFeatureBaseline
-from garage.tf.algos.ppo import PPO
-from garage.tf.policies.gaussian_mlp_policy import GaussianMLPPolicy
+from rllab.envs.normalized_env import normalize
+from rllab.baselines.linear_feature_baseline import LinearFeatureBaseline
+from rllab.algos.ppo import PPO
+from rllab.policies.gaussian_mlp_policy import GaussianMLPPolicy
 
 
-env = normalize(QuadFallingDown())
+env = normalize(env=QuadFallingDown())
 policy = GaussianMLPPolicy(
 			env_spec=env.spec,
 )
