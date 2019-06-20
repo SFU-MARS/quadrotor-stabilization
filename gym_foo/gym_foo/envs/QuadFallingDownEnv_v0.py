@@ -1,13 +1,10 @@
-#!/usr/bin/python3.5
 
-from rllab.core.serializable import Serializable
-from rllab.envs.base import Env, Step
-from rllab.spaces.box import Box
 import numpy as np
 
 import rospy
 import time
-
+import gym
+from gym import spaces
 
 from gazebo_msgs.msg import ModelState
 from gazebo_msgs.msg import ContactsState
@@ -25,10 +22,8 @@ from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from utils import board_to_world, init_quad, apply_wrench_to_quad
 
 
-
-class QuadFallingDown(Env, Serializable):
+class QuadFallingDownEnv_v0(gym.Env):
     def __init__(self):
-        Serializable.quick_init(self, locals())
         # Note: need to be compatible with the quadrotor.urdf. Here I use crazyflie params
         self.mass = 0.027
         self.weight = self.mass * 9.81
@@ -203,8 +198,7 @@ class QuadFallingDown(Env, Serializable):
         self.step_counter += 1
 
         # print("reward:%f" %reward)
-
-        return Step(observation=np.copy(obsrv), reward=reward, done=done)
+        return np.array(np.copy(obsrv)), reward, done, {}
 
     def get_obsrv(self, dynamic_data):
         # we don't include any state variables w.r.t 2D positions (x,y)
@@ -263,10 +257,10 @@ class QuadFallingDown(Env, Serializable):
     # observation space: [z,vx,vy,vz,roll,pitch,yaw,roll_rate,pitch_rate,yaw_rate]
     @property
     def observation_space(self):
-        return Box(low=-np.inf, high=np.inf, shape=(10,))
+        return spaces.Box(low=-np.inf, high=np.inf, shape=(10,))
 
     @property
     def action_space(self):
         # it's not feasible to set the lower limit to the weight of quad since sometimes we may require one of the motor to be zero for highly rolling or something
 
-        return Box(low=0, high=self.max_lift/4., shape=(4,))
+        return spaces.Box(low=0, high=self.max_lift/4., shape=(4,))

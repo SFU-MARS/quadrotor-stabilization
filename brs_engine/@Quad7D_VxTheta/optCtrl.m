@@ -6,7 +6,8 @@ if nargin < 5
 end
 
 if ~iscell(deriv)
-    deriv = num2cell(deriv)
+    deriv = num2cell(deriv);
+end
 
 %% Optimal control
 uOpt = cell(obj.nu, 1);
@@ -14,17 +15,15 @@ uOpt = cell(obj.nu, 1);
 det = cell(obj.nu, 1);
 
 %% (1) Vx = ... 
-%% (2) Vz = ... 
 %% (3) theta = ... 
-%% (4) w = ... 
 
-%% Two det elements for two controls: T1, T2 in X-Z plane. Remember there are slight difference with BaRC due to the Gazebo angle direction routine
-det{1} = deriv{1}.*(1/obj.m).*sin(x{3}) + deriv{2}.*(1/obj.m).*cos(x{3}) + deriv{4}.*(obj.l/obj.Iyy);
+%% Two det elements for two controls: T1, T2 in X-Z plane. Remember there are slight difference with BaRC due to the Gazebo's angle direction routine
+det{1} = deriv{1} .* sin(x{2}) / obj.m;
+det{2} = deriv{1} .* sin(x{2}) / obj.m;
+det{3} = deriv{2};
 
-det{2} = deriv{1}.*(1/obj.m).*sin(x{3}) + deriv{2}.*(1/obj.m).*cos(x{3}) + deriv{4}.*(-obj.l/obj.Iyy);
-
-uMin = [obj.T1Min; obj.T2Min];
-uMax = [obj.T1Max; obj.T2Max];
+uMin = [obj.T1Min; obj.T2Min; obj.wtRange(1)];
+uMax = [obj.T1Max; obj.T2Max; obj.wtRange(2)];
 
 if strcmp(uMode, 'max')
     for i = 1:obj.nu
