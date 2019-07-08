@@ -1,0 +1,2 @@
+model_checkpoint_path: "/local-scratch/xlv/pre_maml/log/QuadFallingDownEnv-v0_ttr_ppo_02-Jul-2019_14-11-19/model/iter_6"
+all_model_checkpoint_paths: "/local-scratch/xlv/pre_maml/log/QuadFallingDownEnv-v0_ttr_ppo_02-Jul-2019_14-11-19/model/iter_6"

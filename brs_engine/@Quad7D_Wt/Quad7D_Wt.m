@@ -38,7 +38,7 @@ classdef Quad7D_Wt < DynSys
       end
       
       if nargin < 7
-        l = 0.039;
+        l = 0.065; %m
       end
       
       if nargin < 8
