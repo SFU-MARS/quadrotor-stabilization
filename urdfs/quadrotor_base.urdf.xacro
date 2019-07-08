@@ -15,15 +15,17 @@
             <visual name="base_link_visual">
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-									 <mesh filename="package://crazyflie_description/meshes/crazyflie2.dae" scale="10 10 10"/>
-									 <!--<box size=".92 .92 .29" />-->
-							</geometry>
+					<!--<mesh filename="package://crazyflie_description/meshes/crazyflie2.dae" scale="5 5 5"/>-->
+                    <mesh filename="package://crazyflie_description/meshes/crazyflie2.dae" scale="10 10 10"/>
+					<!--<box size=".92 .92 .29" />-->
+					</geometry>
             </visual>
 
             <collision name="base_link_collision">
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <box size=".92 .92 .29" />
+                    <!--<box size=".46 .46 0.145" />-->
+                    <box size=".92 .92 .29"/>
                 </geometry>
             </collision>
         </link>

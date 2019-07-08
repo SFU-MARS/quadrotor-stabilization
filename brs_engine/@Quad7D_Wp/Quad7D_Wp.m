@@ -38,7 +38,7 @@ classdef Quad7D_Wp < DynSys
       end
       
       if nargin < 7
-        l = 0.039;
+        l = 0.065; %crazyfile size: 0.092 * 0.092 * 0.029 (WHD)
       end
       
       if nargin < 8

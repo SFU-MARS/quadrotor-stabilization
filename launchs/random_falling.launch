@@ -2,7 +2,7 @@
 	
 	<!-- this part is for world launching --> 
 	<!-- <arg name="world_file" default="worlds/empty.world"/> -->
-	<arg name="world_file" default="$(env QUADROTOR_WORLD_AIR_SPACE)" />
+	<arg name="world_file" default="$(env QUADROTOR_WORLD_CUBE_SPACE)" />
 
 	<arg name="gui" default="true"/>
 	
