@@ -219,7 +219,7 @@ def ppo_learn(env, policy,
 
             log_data = np.concatenate((ob, vpred_shaped, atarg_shaped, tdlamret_shaped, tdtarget_shaped, rews_shaped), axis=1)
 
-            if args['gym_env'] == 'QuadTaskOffHoverEnv-v0':
+            if args['gym_env'] == 'QuadTakeOffHoverEnv-v0':
                 log_df = pd.DataFrame(log_data, columns=['z', 'vx', 'vy', 'vz', 'roll', 'pitch', 'yaw', 'roll_w', 'pitch_w', 'yaw_w', 'vpred', 'atarg', 'tdlamret', 'tdtarget','rews'])
             else:
                 raise ValueError("invalid env !!!")

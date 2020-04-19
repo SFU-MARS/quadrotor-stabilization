@@ -1,0 +1,1 @@
+For TakeOffHover task, the target for Vz is 1m/s for the purpose of flying upward.
