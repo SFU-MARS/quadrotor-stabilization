@@ -2,7 +2,7 @@
 This repository contains the implementation of the robust quadrotor stabilization research work.
 
 ## Installation
-The simulation environment is based on the [phoenix-drone-simulation](https://github.com/SvenGronauer/phoenix-drone-simulation.git). 
+The simulation environment is based on the [OptimizedDP library](https://github.com/SFU-MARS/optimized_dp) and the [phoenix-drone-simulation](https://github.com/SvenGronauer/phoenix-drone-simulation.git).
 
 One method is to comment out the contents of the `install_requires` in the file `setup.py` first, and then use commands:
 ```
