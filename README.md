@@ -1,4 +1,14 @@
-This branch is called "dev_from_202004", which means it is a new start from April 2020. 
+# Quadrotor Stabilization
+This repository contains the implementation of the robust quadrotor stabilization research work.
 
-(1) Complie ROS package CrazyS
-(2) Customize launch files in ./launchs, or world files in ./worlds
+## Installation
+The simulation environment is based on the [phoenix-drone-simulation](https://github.com/SvenGronauer/phoenix-drone-simulation.git). 
+One method is to:
+```
+$ git clone https://github.com/SvenGronauer/phoenix-drone-simulation
+$ cd phoenix-drone-simulation/
+$ pip install -e .
+```
+Remember to comment out the contents of the `install_requires` in the file `setup.py` first. 
+
+The other method is to use `git submodule add` command. Unfortunately, I have not tried this before so I can not give any advice.
