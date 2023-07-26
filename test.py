@@ -37,7 +37,9 @@ model = Model(
     log_dir=default_log_dir,
     init_seed=2390,
 )
-model = torch.load("runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-17__20-39-02/seed_02390/torch_save/model.pt")
+model.torch_saver_elements.load_state_dict(torch.load("runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-17__20-39-02/seed_02390/torch_save/model.pt"))
+print("The model is loaded successfully!")
+# model.eval()
 
 # 4) visualize trained PPO model
 env = gym.make(env_id)
