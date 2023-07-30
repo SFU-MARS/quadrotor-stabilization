@@ -12,6 +12,7 @@ from gym.envs.registration import register
 import torch
 from phoenix_drone_simulation.algs.model import Model
 from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
+from phoenix_drone_simulation.algs.ppo.ppo import ProximalPolicyOptimizationAlgorithm
 
 # output_dir = data_dir/env-id/algo/YY-MM-DD_HH-MM-SS/seed[seed]
 # fpath = 'torch_save'
@@ -23,6 +24,22 @@ from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
 algo = 'ppo'
 env_id = "DroneHoverBulletEnvWithAdversary-v0"
 default_log_dir = f"./runs/phoenix"
+ac_kwargs = {
+        "pi":	{
+            "activation":	"relu",
+            "hidden_sizes":	[
+                50,
+                50
+            ]
+        },
+        "val":	{
+            "activation":	"tanh",
+            "hidden_sizes":	[
+                64,
+                64
+            ]
+        }
+    }
 
 if "Adversary" in env_id:
     assert env_id == 'DroneHoverBulletEnvWithAdversary-v0'
@@ -37,9 +54,15 @@ model = Model(
     log_dir=default_log_dir,
     init_seed=2390,
 )
-model.actor_critic = torch.load("runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-17__20-39-02/seed_02390/torch_save/model.pt")
+model.compile()
+
+logger_kwargs = model.logger_kwargs
+ppo = ProximalPolicyOptimizationAlgorithm(actor='mlp', ac_kwargs=ac_kwargs, env_id=env_id, epochs=100, logger_kwargs=logger_kwargs)
+ppo.ac.load_state_dict(torch.load("runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-17__20-39-02/seed_02390/torch_save/model.pt")) 
+ppo.ac.eval()
+# = torch.load("runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-17__20-39-02/seed_02390/torch_save/model.pt")
 print("The model is loaded successfully!")
-model.eval()
+# model.eval()
 
 # 4) visualize trained PPO model
 env = gym.make(env_id)
@@ -51,7 +74,7 @@ while True:
     done = False
     while not done:
         obs = torch.as_tensor(obs, dtype=torch.float32)
-        action, value, *_ = model.actor_critic(obs)
+        action, value, logp = ppo.ac.step(obs)
         obs, reward, done, info = env.step(action)
 
         time.sleep(0.05)
