@@ -23,7 +23,7 @@ from phoenix_drone_simulation.algs.ppo.ppo import ProximalPolicyOptimizationAlgo
 # 1) set up algorithm, environment id and the trained model
 algo = 'ppo'
 env_id = "DroneHoverBulletEnvWithAdversary-v0"
-default_log_dir = f"./runs/phoenix"
+default_log_dir = f"./tests/phoenix/random_d"
 ac_kwargs = {
         "pi":	{
             "activation":	"relu",
