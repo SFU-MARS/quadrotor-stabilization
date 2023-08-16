@@ -624,7 +624,7 @@ if __name__ == "__main__":
     uavsol = UAVSolution()
     if args.load_data is True: 
         slicecut = 7  #for 15*15
-        V = np.load('adversarial_generation/FasTrack_data/fastrack_0.5_15x15.npy')
+        V = np.load('/localhome/xza213/quadrotor-stabilization/adversarial_generation/FasTrack_data/fastrack_1.5_15x15.npy')
         grid = Grid(np.array([-math.pi/2.4, -math.pi/2.4, -math.pi/2.4, -math.pi, -math.pi, -math.pi]), np.array([math.pi/2.4, math.pi/2.4, math.pi/2.4, math.pi, math.pi, math.pi]), 6, np.array([15,15,15,15,15,15]), [0,1,2])
         
     else: 

@@ -25,6 +25,7 @@ from phoenix_drone_simulation.envs.hover import DroneHoverBaseEnv
 from phoenix_drone_simulation.envs.physics import PyBulletPhysics
 from phoenix_drone_simulation.envs.agents import CrazyFlieAgent, CrazyFlieBulletAgent, CrazyFlieSimpleAgent
 from phoenix_drone_simulation.algs.model import Model
+from adversarial_generation.FasTrack_data.distur_gener import * 
 
 
 
@@ -146,7 +147,8 @@ class DroneHoverBulletEnvWithAdversary(DroneHoverBaseEnv):
         self.dstb_space = gym.spaces.Box(low=np.array([-1*10**-3, -1*10**-3, -1*10**-4]), 
                                         high=np.array([1*10**-3,  1*10**-3,  1*10**-4]), 
                                         dtype=np.float32)
-        self.dstb_gen   = lambda x: self.dstb_space.sample() 
+        # self.dstb_gen   = lambda x: self.dstb_space.sample() 
+        self.disturbance_level = 1.5 # Dmax = uMax * disturbance_level
         # self.dstb_gen = lambda x: np.array([0,0,0])
 
 
@@ -245,9 +247,14 @@ class DroneHoverBulletEnvWithAdversary(DroneHoverBaseEnv):
 
         # XL: This is special in our adversary Env for generating 
         # disturbance from HJ reachability
-        x = self.drone.get_state()
-        dstb = self.dstb_gen(x)
-
+        angles = quat2euler(self.drone.get_state()[3:7])
+        angular_rates = self.drone.get_state()[10:13]
+        # dstb = self.dstb_gen(x) # generate disturbance
+        # Disturbance gives a six dimensional vector, includes [roll_angle, pitch_angle, yaw_angle, roll_rate, pitch_rate, yaw_rate]
+        # yaw_angle and yaw_rate are not used in the disturbance model
+        # combine angles and angular rates together to form a [6,1] list
+        states = np.concatenate((angles, angular_rates), axis=0)
+        _, dstb = distur_gener(states, self.disturbance_level)
 
         for _ in range(self.aggregate_phy_steps):
             # Note:
