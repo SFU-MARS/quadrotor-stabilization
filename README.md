@@ -34,3 +34,10 @@ conda install pandas
 ```
 
 Sorry for the complex installations, we will sort them up later.
+
+# Working Logs
+## Transfer sb3
+Xubo's advice:
+1. Pay attention to the range of the action space while using sb3 algorithms!
+If the range is not the same, try to multiply a constant coefficient!
+2. Could also check https://github.com/gsilano/CrazyS

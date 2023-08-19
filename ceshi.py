@@ -2,7 +2,8 @@ import gym
 import time
 import phoenix_drone_simulation
 
-# env = gym.make('DroneHoverBulletEnv-v0')
+env = gym.make('DroneHoverBulletEnv-v0')
+print(env.action_space)
 
 # while True:
 #     done = False
