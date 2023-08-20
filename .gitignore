@@ -2,3 +2,6 @@ runs_log_tests/
 *.mat
 *.pkl
 
+
+/phoenix-drone-simulation
+/phoenix_drone
