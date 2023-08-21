@@ -352,10 +352,15 @@ def start_training(algo, env_id):
     )
     model.compile()
 
+    start_time = time.perf_counter()
+
     # 2) Train model - it takes typically at least 100 epochs for training
     model.fit(epochs=100)
 
-    # 3) Benchmark the final policy and save results into `returns.csv`
+    duration = time.perf_counter() - start_time
+    print(f"The time of training is {duration}. \n")
+    # 3) Benchmark the f
+    # inal policy and save results into `returns.csv`
     model.eval()
 
     # 4) visualize trained PPO model

@@ -16,7 +16,7 @@ from odp.solver import TTRSolver
 from scipy.integrate import solve_ivp
 
 
-def distur_gener(states,disturbance):
+def distur_gener(states, disturbance):
 
 
     def opt_ctrl_non_hcl(uMax, spat_deriv):

@@ -56,11 +56,14 @@ model = Model(
 )
 model.compile()
 
+# model_path = 'runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-30__14-00-07/seed_53079/torch_save/model.pt'
+model_path = 'runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-08-16__18-11-54/seed_29658/torch_save/model.pt'
+
 logger_kwargs = model.logger_kwargs
 ppo = ProximalPolicyOptimizationAlgorithm(actor='mlp', ac_kwargs=ac_kwargs, env_id=env_id, epochs=100, logger_kwargs=logger_kwargs)
-ppo.ac.load_state_dict(torch.load("runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-17__20-39-02/seed_02390/torch_save/model.pt")) 
+ppo.ac.load_state_dict(torch.load(model_path)) 
 ppo.ac.eval()
-# = torch.load("runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-17__20-39-02/seed_02390/torch_save/model.pt")
+
 print("The model is loaded successfully!")
 # model.eval()
 
