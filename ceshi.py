@@ -5,12 +5,24 @@ from gym.envs.registration import register
 from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
 
 
-env = gym.make('DroneHoverBulletEnv-v0')
-print(env.action_space)
+# env = gym.make('DroneHoverBulletEnv-v0')
+# print(env.action_space)
 
 
 env_id = 'DroneHoverBulletEnvWithAdversary-v0'
-# register(id=env_id, entry_point="{}:{}".format(DroneHoverBulletEnvWithAdversary.__module__, DroneHoverBulletEnvWithAdversary.__name__), max_episode_steps=500,)
+# register(id=env_id, entry_point="{}:{}".format(DroneHoverBulletEnvWithAdversary.__module__, DroneHoverBulletEnvWithAdversary.__name__), max_episode_steps=500)
+register(id=env_id, entry_point="{}:{}".format(
+        DroneHoverBulletEnvWithAdversary.__module__, 
+        DroneHoverBulletEnvWithAdversary.__name__), max_episode_steps=500)
+env = gym.make('DroneHoverBulletEnvWithAdversary-v0')
+env.seed(seed=2022)
+print(50*"=")
+
+
+print(env.observation_space)
+print(env.action_space)
+# print((env.drone.rpy))
+
 # while True:
 #     done = False
 #     env.render()  # make GUI of PyBullet appear

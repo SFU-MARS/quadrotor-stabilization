@@ -127,7 +127,7 @@ class DroneHoverBulletEnvWithAdversary(DroneHoverBaseEnv):
         super(DroneHoverBulletEnvWithAdversary, self).__init__(
             aggregate_phy_steps=aggregate_phy_steps,
             control_mode=control_mode,
-            drone_model='cf21x_bullet_adversary',
+            drone_model='cf21x_bullet_adversary',  # CrazyFlieBulletAgentWithAdversary
             physics='PybulletPhysicsWithAdversary',
             observation_frequency=100,  # use 100Hz PWM control loop
             sim_freq=200,  # but step physics with 200Hz
