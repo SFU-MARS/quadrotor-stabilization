@@ -36,6 +36,9 @@ conda install pandas
 Sorry for the complex installations, we will sort them up later.
 
 # Working Logs
+2023.8.23
+The trying of the env_id `DroneHoverBulletEnvWithAdversary-v0` failed (both PPO and SAC, both PPO from sb3 and PPO here). 
+Now try the origional command `python -m phoenix_drone_simulation.train --alg ppo --env DroneHoverBulletEnv-v0` in the tmux environment `phonex_base`. Try to make it clear how the algorithm works and where to store the training results, how to display using the stored checkpoints. Then try our environment with its original local PPO.
 ## Transfer sb3
 Xubo's advice:
 1. Pay attention to the range of the action space while using sb3 algorithms!

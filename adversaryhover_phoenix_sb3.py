@@ -3,6 +3,8 @@ from gym.envs.registration import register
 
 from stable_baselines3 import PPO, SAC 
 from stable_baselines3.common.callbacks import CallbackList, CheckpointCallback
+from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.noise import ActionNoise, NormalActionNoise
 
 from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
 from utility import init_env
@@ -38,13 +40,14 @@ def train_with_sb3(env_id='DroneHoverBulletEnvWithAdversary-v0',
 
     # initilize environments, choose the number of training env 
     env = init_env(n_envs=n_envs, env_id=env_id)
+    # check_env(env)  # AssertionError: Your environment must inherit from the gymnasium.Env class cf. https://gymnasium.farama.org/api/env/
 
     # Setup sb3 algorithm model
     # TODO: future could tune more hyperparameters
     if alg == 'PPO':
-        model = PPO(policy='MlpPolicy', env=env, verbose=1, tensorboard_log=f"sb3_tensorboard/{env_id}/{alg}")
+        model = PPO(policy='MlpPolicy', env=env, batch_size=32, ent_coef=0.001, verbose=1, tensorboard_log=f"sb3_tensorboard/{env_id}/{alg}")
     elif alg == 'SAC':
-        model = SAC(policy='MlpPolicy', env=env, verbose=1, tensorboard_log=f"sb3_tensorboard/{env_id}/{alg}")
+        model = SAC(policy='MlpPolicy', env=env, batch_size=32, verbose=1, ent_coef=0.2, tensorboard_log=f"sb3_tensorboard/{env_id}/{alg}")
     else:
         print("Please check out the algorithm name again.")
     start_time = time.perf_counter()

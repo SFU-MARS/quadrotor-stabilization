@@ -43,4 +43,4 @@ def test_with_sb3(env_id='DroneHoverBulletEnvWithAdversary-v0', alg='PPO', times
 
 
 if __name__ == "__main__":
-    test_with_sb3(alg='SAC', timesteps=50000)
+    test_with_sb3(alg='SAC', timesteps=5000000)
