@@ -89,7 +89,7 @@
                 "disturbance_level":	1.5,
                 "domain_randomization":	0.1,
                 "drone":	{
-                    "<__main__.CrazyFlieBulletAgentWithAdversary object at 0x7f1468f5e310>":	{
+                    "<__main__.CrazyFlieBulletAgentWithAdversary object at 0x7f07983f4af0>":	{
                         "A":	"[0.9375 0.9375 0.9375 0.9375]",
                         "B":	"[0.0625 0.0625 0.0625 0.0625]",
                         "COLLISION_H":	0.025,
@@ -150,7 +150,7 @@
                         "buf_size":	2,
                         "color":	"[1. 1. 1. 1.]",
                         "control":	{
-                            "<phoenix_drone_simulation.envs.control.PWM object at 0x7f1468f5e790>":	{
+                            "<phoenix_drone_simulation.envs.control.PWM object at 0x7f07983f4f70>":	{
                                 "bc":	"pybullet",
                                 "control_counter":	0,
                                 "drone":	"Already dumped elsewhere (stop recursion)",
@@ -177,7 +177,7 @@
                         "rpy_dot":	"[0. 0. 0.]",
                         "self_collision":	false,
                         "thrust_noise":	{
-                            "<phoenix_drone_simulation.envs.utils.OUNoise object at 0x7f1468f5efd0>":	{
+                            "<phoenix_drone_simulation.envs.utils.OUNoise object at 0x7f07983f4c40>":	{
                                 "action_dimension":	4,
                                 "mu":	0,
                                 "sigma":	0.010000000000000002,
@@ -214,11 +214,11 @@
                 "enable_reset_distribution":	true,
                 "g":	9.8,
                 "gyro_lpf":	{
-                    "<phoenix_drone_simulation.envs.utils.LowPassFilter object at 0x7f1468fa4880>":	{
+                    "<phoenix_drone_simulation.envs.utils.LowPassFilter object at 0x7f07984490a0>":	{
                         "K":	1.0,
                         "T":	0.01,
                         "T_s":	0.005,
-                        "_x":	"[-0.00322498 -0.02929846  0.02116124]"
+                        "_x":	"[-0.05167244  0.02126019 -0.00134906]"
                     }
                 },
                 "init_quaternion":	"[0. 0. 0. 1.]",
@@ -276,7 +276,7 @@
                 "penalty_terminal":	100,
                 "penalty_velocity":	0,
                 "physics":	{
-                    "<__main__.PybulletPhysicsWithAdversary object at 0x7f1468f5e820>":	{
+                    "<__main__.PybulletPhysicsWithAdversary object at 0x7f07983f4fa0>":	{
                         "G":	9.81,
                         "bc":	"pybullet",
                         "drone":	"Already dumped elsewhere (stop recursion)",
@@ -288,11 +288,11 @@
                 "roll_pitch_limit":	0.17453292519943295,
                 "rpy_dot_limit":	3.490658503988659,
                 "sensor_noise":	{
-                    "<phoenix_drone_simulation.envs.sensors.SensorNoise object at 0x7f1468f5e2e0>":	{
+                    "<phoenix_drone_simulation.envs.sensors.SensorNoise object at 0x7f07983f4fd0>":	{
                         "acc_dynamic_noise_ratio":	0.005,
                         "acc_static_noise_std":	0.002,
                         "bypass":	false,
-                        "gyro_bias":	"[-2.45068595e-04 -7.30605099e-05 -2.50631115e-05]",
+                        "gyro_bias":	"[1.32131392e-04 3.41275972e-06 1.51897336e-05]",
                         "gyro_bias_correlation_time":	1000.0,
                         "gyro_noise_density":	0.000175,
                         "gyro_random_walk":	0.0105,
@@ -316,7 +316,7 @@
                         "reward_threshold":	null
                     }
                 },
-                "state":	"[ 8.45457914e-04 -3.30173169e-04  1.00222729e+00 -2.51279383e-03\n  5.84836735e-04  3.66385981e-04  9.99996605e-01 -2.69626682e-02\n  1.36845587e-03 -9.37011477e-04 -6.44995383e-03 -5.85969254e-02\n  4.23224792e-02  0.00000000e+00  0.00000000e+00  0.00000000e+00\n  0.00000000e+00]",
+                "state":	"[-7.81434509e-04  2.08214339e-03  9.99793753e-01  8.56855006e-04\n -4.87236382e-04 -1.64118098e-03  9.99998167e-01 -1.75421511e-02\n  2.16478295e-02 -2.16453790e-03 -1.03344889e-01  4.25203852e-02\n -2.69812871e-03  0.00000000e+00  0.00000000e+00  0.00000000e+00\n  0.00000000e+00]",
                 "stored_state_id":	-1,
                 "target_pos":	"[0. 0. 1.]",
                 "time_step":	0.005,
@@ -349,7 +349,7 @@
     "rpy_dot_limit":	3.490658503988659,
     "sensor_noise":	"Already dumped elsewhere (stop recursion)",
     "spec":	"Already dumped elsewhere (stop recursion)",
-    "state":	"[ 8.45457914e-04 -3.30173169e-04  1.00222729e+00 -2.51279383e-03\n  5.84836735e-04  3.66385981e-04  9.99996605e-01 -2.69626682e-02\n  1.36845587e-03 -9.37011477e-04 -6.44995383e-03 -5.85969254e-02\n  4.23224792e-02  0.00000000e+00  0.00000000e+00  0.00000000e+00\n  0.00000000e+00]",
+    "state":	"[-7.81434509e-04  2.08214339e-03  9.99793753e-01  8.56855006e-04\n -4.87236382e-04 -1.64118098e-03  9.99998167e-01 -1.75421511e-02\n  2.16478295e-02 -2.16453790e-03 -1.03344889e-01  4.25203852e-02\n -2.69812871e-03  0.00000000e+00  0.00000000e+00  0.00000000e+00\n  0.00000000e+00]",
     "stored_state_id":	-1,
     "target_pos":	"[0. 0. 1.]",
     "time_step":	0.005,

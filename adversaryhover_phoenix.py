@@ -254,7 +254,9 @@ class DroneHoverBulletEnvWithAdversary(DroneHoverBaseEnv):
         # yaw_angle and yaw_rate are not used in the disturbance model
         # combine angles and angular rates together to form a [6,1] list
         states = np.concatenate((angles, angular_rates), axis=0)
-        _, dstb = distur_gener(states, self.disturbance_level)
+        # _, dstb = distur_gener(states, self.disturbance_level) 
+        # Hanyang: try to do not add distb 
+        dstb = (0.0, 0.0, 0.0)
 
         for _ in range(self.aggregate_phy_steps):
             # Note:
@@ -340,7 +342,7 @@ def start_training(algo, env_id):
     random_seed = int(time.time()) % 2 ** 16
 
     # I usually save my results into the following directory:
-    default_log_dir = f"./runs/phoenix"
+    default_log_dir = f"./runs/original_ppo/no_distb"
 
     # NEW: use algorithms implemented in phoenix_drone_simulation:
     # 1) Setup learning model
@@ -355,7 +357,7 @@ def start_training(algo, env_id):
     start_time = time.perf_counter()
 
     # 2) Train model - it takes typically at least 100 epochs for training
-    model.fit(epochs=100)
+    model.fit(epochs=300)
 
     duration = time.perf_counter() - start_time
     print(f"The time of training is {duration}. \n")
