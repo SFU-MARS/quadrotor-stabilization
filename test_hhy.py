@@ -57,7 +57,7 @@ model = Model(
 model.compile()
 
 # model_path = 'runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-30__14-00-07/seed_53079/torch_save/model.pt'
-model_path = 'runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-08-16__18-11-54/seed_29658/torch_save/model.pt'
+model_path = 'runs/original_ppo/no_distb/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-08-23__22-56-22/seed_61702/torch_save/model.pt'
 # model_path = 'runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-08-20__13-12-01/seed_29585/torch_save/model.pt'
 
 logger_kwargs = model.logger_kwargs

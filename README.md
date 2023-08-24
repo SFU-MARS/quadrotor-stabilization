@@ -40,7 +40,14 @@ Sorry for the complex installations, we will sort them up later.
 The trying of the env_id `DroneHoverBulletEnvWithAdversary-v0` failed (both PPO and SAC, both PPO from sb3 and PPO here). 
 Now try the origional command `python -m phoenix_drone_simulation.train --alg ppo --env DroneHoverBulletEnv-v0` in the tmux environment `phonex_base`. Try to make it clear how the algorithm works and where to store the training results, how to display using the stored checkpoints. Then try our environment with its original local PPO.
 
-I train our env with no distb in tmux phoenix_nodistb_oppo, command: `python adversary_phoenix.py`, pay attention to the save log directory.
+I train our env with no distb in tmux `phoenix_nodistb_oppo`, command: `python adversary_phoenix.py`, pay attention to the save log directory.
+
+Results:
+| environment | algorithm | train logdir | test logdir | performance |
+| ------------|-----------|------------|-----------| ----------- |
+|DroneHoverBulletEnvWithAdversary-v0 with no dstb | original PPO |  runs/original_ppo/no_distb/ | tests/phoenix/random_d/.../2023-08-24__11-48-40| Good |
+| DroneHoverBulletEnv-v0 | original PPO | runs/base | python -m phoenix_drone_simulation.play --ckpt runs/base/ppo/2023-08-23__15-58-26/seed_36626 | OK |
+
 
 
 ## Transfer sb3
