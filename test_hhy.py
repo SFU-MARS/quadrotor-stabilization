@@ -41,12 +41,12 @@ ac_kwargs = {
         }
     }
 
-if "Adversary" in env_id:
-    assert env_id == 'DroneHoverBulletEnvWithAdversary-v0'
-    register(id=env_id, entry_point="{}:{}".format(
-        DroneHoverBulletEnvWithAdversary.__module__, 
-        DroneHoverBulletEnvWithAdversary.__name__), 
-        max_episode_steps=500,)
+# if "Adversary" in env_id:
+#     assert env_id == 'DroneHoverBulletEnvWithAdversary-v0'
+#     register(id=env_id, entry_point="{}:{}".format(
+#         DroneHoverBulletEnvWithAdversary.__module__, 
+#         DroneHoverBulletEnvWithAdversary.__name__), 
+#         max_episode_steps=500,)
     
 model = Model(
     alg=algo,  # choose between: trpo, ppo
@@ -56,9 +56,8 @@ model = Model(
 )
 model.compile()
 
-# model_path = 'runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-07-30__14-00-07/seed_53079/torch_save/model.pt'
 model_path = 'runs/original_ppo/no_distb/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-08-23__22-56-22/seed_61702/torch_save/model.pt'
-# model_path = 'runs/phoenix/DroneHoverBulletEnvWithAdversary-v0/ppo/2023-08-20__13-12-01/seed_29585/torch_save/model.pt'
+
 
 logger_kwargs = model.logger_kwargs
 ppo = ProximalPolicyOptimizationAlgorithm(actor='mlp', ac_kwargs=ac_kwargs, env_id=env_id, epochs=100, logger_kwargs=logger_kwargs)

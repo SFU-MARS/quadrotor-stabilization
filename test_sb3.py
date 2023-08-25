@@ -6,22 +6,22 @@ from stable_baselines3 import PPO, SAC
 from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
 
 
-def test_with_sb3(env_id='DroneHoverBulletEnvWithAdversary-v0', alg='PPO', timesteps=100000):
+def test_with_sb3(env_id='DroneHoverBulletEnvWithAdversary-v0', alg='PPO', path=None):
     # register and initilaize the environment
-    assert env_id == 'DroneHoverBulletEnvWithAdversary-v0'
-    register(id=env_id, entry_point="{}:{}".format(
-            DroneHoverBulletEnvWithAdversary.__module__, 
-            DroneHoverBulletEnvWithAdversary.__name__), max_episode_steps=500)
+    # assert env_id == 'DroneHoverBulletEnvWithAdversary-v0'
+    # register(id=env_id, entry_point="{}:{}".format(
+    #         DroneHoverBulletEnvWithAdversary.__module__, 
+    #         DroneHoverBulletEnvWithAdversary.__name__), max_episode_steps=500)
     env = gym.make(env_id)
 
     # Setup sb3 algorithm model and load the trained model
     # TODO: future could tune more hyperparameters
-    model_path = f"sb3_models/{env_id}/{alg}_{timesteps}"
+    model_path = path
     if alg == 'PPO':
-        model = PPO(policy='MlpPolicy', env=env, verbose=1, tensorboard_log=f"sb3_tensorboard/{env_id}/{alg}")
+        model = PPO(policy='MlpPolicy', env=env, verbose=1)
         model = PPO.load(model_path)
     elif alg == 'SAC':
-        model = SAC(policy='MlpPolicy', env=env, verbose=1, tensorboard_log=f"sb3_tensorboard/{env_id}/{alg}")
+        model = SAC(policy='MlpPolicy', env=env, verbose=1)
         model = SAC.load(model_path)
     else:
         print("Please check out the algorithm name again.")
@@ -43,4 +43,6 @@ def test_with_sb3(env_id='DroneHoverBulletEnvWithAdversary-v0', alg='PPO', times
 
 
 if __name__ == "__main__":
-    test_with_sb3(alg='SAC', timesteps=5000000)
+    # model_path = 'sb3_models/DroneHoverBulletEnvWithAdversary-v0/08_24_15_04/PPO_10000000.zip'
+    model_path = 'sb3_models/DroneHoverBulletEnvWithAdversary-v0/08_24_16_21/PPO_10000000.zip'
+    test_with_sb3(alg='PPO', path=model_path)
