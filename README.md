@@ -49,6 +49,9 @@ Results:
 | DroneHoverBulletEnv-v0 | original PPO | runs/base | python -m phoenix_drone_simulation.play --ckpt runs/base/ppo/2023-08-23__15-58-26/seed_36626 | OK |
 | DroneHoverBulletEnvWithAdversary-v0 with no dstb | sb3 PPO | sb3_tensorboard/DroneHoverBulletEnvWithAdversary-v0/08_24_15_04 | None | less OK |
 | DroneHoverBulletEnvWithAdversary-v0 with random dstb | sb3 PPO | Unknow | None | Unknow| 
+| DroneHoverBulletEnvwithAdersary-v0 with random dstb | original PPO (python -m phoenix_drone_simulation.train --alg ppo --env DroneHoverBulletEnvwithAdersary-v0) | unknow | unknow
+| DroneHoverBulletEnvWithAdversary-v0 with HJ dstb | sb3 PPO | Unknow | None | Unknow| 
+| DroneHoverBulletEnvwithAdersary-v0 with HJ dstb | original PPO (python adversaryhover_phoenix.py) | unknow | unknow
 
 2023.8.24
 Add our custermized environment `DroneHoverBulletEnvWithAdversary-v0` to its original register codes (`phoenix-drone-simulation/phoenix_drone_simulation/__init__.py`) so we do not need to register this environment everytime we use it. The details of the code are in the `phoenix-drone-simulation/phoenix_drone_simulation/envs/hover.py`.

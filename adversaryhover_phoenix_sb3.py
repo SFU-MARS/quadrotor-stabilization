@@ -63,4 +63,4 @@ def train_with_sb3(env_id='DroneHoverBulletEnvWithAdversary-v0',
 
 
 if __name__ == "__main__":
-    train_with_sb3(alg='PPO', n_envs=4, timesteps=10000000, save_freq=1000000)
+    train_with_sb3(alg='PPO', n_envs=-1, timesteps=20000000, save_freq=1000000)

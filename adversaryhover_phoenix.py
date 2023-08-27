@@ -254,9 +254,9 @@ class DroneHoverBulletEnvWithAdversary(DroneHoverBaseEnv):
         # yaw_angle and yaw_rate are not used in the disturbance model
         # combine angles and angular rates together to form a [6,1] list
         states = np.concatenate((angles, angular_rates), axis=0)
-        # _, dstb = distur_gener(states, self.disturbance_level) 
+        _, dstb = distur_gener(states, self.disturbance_level) 
         # Hanyang: try to do not add distb 
-        dstb = (0.0, 0.0, 0.0)
+        # dstb = (0.0, 0.0, 0.0)
 
         for _ in range(self.aggregate_phy_steps):
             # Note:
@@ -329,12 +329,12 @@ def test_env(env_id):
 
 def start_training(algo, env_id):
     env_id = env_id
-    if "Adversary" in env_id:
-        assert env_id == 'DroneHoverBulletEnvWithAdversary-v0'
-        register(id=env_id, entry_point="{}:{}".format(
-            DroneHoverBulletEnvWithAdversary.__module__, 
-            DroneHoverBulletEnvWithAdversary.__name__), 
-            max_episode_steps=500,)
+    # if "Adversary" in env_id:
+    #     assert env_id == 'DroneHoverBulletEnvWithAdversary-v0'
+    #     register(id=env_id, entry_point="{}:{}".format(
+    #         DroneHoverBulletEnvWithAdversary.__module__, 
+    #         DroneHoverBulletEnvWithAdversary.__name__), 
+    #         max_episode_steps=500,)
 
 
 
@@ -342,7 +342,7 @@ def start_training(algo, env_id):
     random_seed = int(time.time()) % 2 ** 16
 
     # I usually save my results into the following directory:
-    default_log_dir = f"./runs/original_ppo/no_distb"
+    default_log_dir = f"./runs/original_ppo/our_distb"
 
     # NEW: use algorithms implemented in phoenix_drone_simulation:
     # 1) Setup learning model
