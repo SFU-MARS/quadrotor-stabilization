@@ -56,6 +56,13 @@ Results:
 2023.8.24
 Add our custermized environment `DroneHoverBulletEnvWithAdversary-v0` to its original register codes (`phoenix-drone-simulation/phoenix_drone_simulation/__init__.py`) so we do not need to register this environment everytime we use it. The details of the code are in the `phoenix-drone-simulation/phoenix_drone_simulation/envs/hover.py`.
 
+2023.8.27
+Try command `python -m phoenix_drone_simulation.train --alg ppo --env DroneHoverBulletEnvWithAdversary-v0 --log-dir /localhome/hha160/projects/quadrotor-stabilization/runs/original_ppo `. 
+This works but it takes so long. So just stop.
+
+2023.8.28
+Test command: python -m phoenix_drone_simulation.play --ckpt PATH_TO_CKPT
+
 
 ## Transfer sb3
 Xubo's advice:

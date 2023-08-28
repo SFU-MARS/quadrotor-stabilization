@@ -1,9 +1,11 @@
 import gym
 import time
 import torch
+from gym.wrappers import Monitor
+import phoenix_drone_simulation
 from gym import wrappers
 from stable_baselines3 import PPO, SAC 
-from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
+# from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
 
 
 def test_with_sb3(env_id='DroneHoverBulletEnvWithAdversary-v0', alg='PPO', path=None):
@@ -29,7 +31,9 @@ def test_with_sb3(env_id='DroneHoverBulletEnvWithAdversary-v0', alg='PPO', path=
     print("The model has been loaded successfully!")
     
     # test
-    env.render() 
+    video_dir = '/localhome/hha160/projects/quadrotor-stabilization/test_videos'
+    env = Monitor(env, video_dir, force=True)
+    # env.render() 
     while True:
         obs = env.reset()
         done = False

@@ -1,39 +1,31 @@
 import gym
+import torch
+from gym.wrappers import Monitor
 import time
 import phoenix_drone_simulation
 from gym.envs.registration import register
-from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
+# from phoenix-drone-simulation/phoenix_drone_simulation/envs/hover.py import DroneHoverBulletEnvWithAdversary
 from stable_baselines3.common.env_checker import check_env
 from datetime import datetime
-
-# env = gym.make('DroneHoverBulletEnv-v0')
-# print(env.action_space)
+import numpy as np
 
 
-# env_id = 'DroneHoverBulletEnvWithAdversary-v0'
-# # register(id=env_id, entry_point="{}:{}".format(DroneHoverBulletEnvWithAdversary.__module__, DroneHoverBulletEnvWithAdversary.__name__), max_episode_steps=500)
-# register(id=env_id, entry_point="{}:{}".format(
-#         DroneHoverBulletEnvWithAdversary.__module__, 
-#         DroneHoverBulletEnvWithAdversary.__name__), max_episode_steps=500)
-# env = gym.make('DroneHoverBulletEnvWithAdversary-v0')
-# # env.seed(seed=2022)
-# # print(50*"=")
-# check_env(env)
+env_id='DroneHoverBulletEnvWithAdversary-v0'
+env = gym.make(env_id)
 
-# print(env.observation_space)
-# print(env.action_space)
-# print((env.drone.rpy))
-# done = False
-# for i in range(10):
-#     # done = False
-#     env.render()  # make GUI of PyBullet appear
-#     x = env.reset()
-#     while not done:
-#         random_action = env.action_space.sample()
-#         x, reward, done, info = env.step(random_action)
-#         print(reward)
-#         time.sleep(0.05)
+video_dir = '/localhome/hha160/projects/quadrotor-stabilization/test_videos'
 
-now = datetime.now()
-dt_string = now.strftime("%m_%d_%H_%M")
-print(dt_string)
+env = Monitor(env, video_dir, force=True)
+obs = env.reset()
+# while True:
+#         obs = env.reset()
+#         done = False
+#         while not done:
+#             obs = torch.as_tensor(obs, dtype=torch.float32)
+#             action, _ = model.predict(obs)
+#             obs, reward, done, info = env.step(action)
+#             # env.render(mode="rgb_array")
+
+#             time.sleep(0.05)
+#             if done:
+#                 obs = env.reset()

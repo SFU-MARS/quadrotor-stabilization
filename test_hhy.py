@@ -1,17 +1,12 @@
-import os, sys
 import numpy as np
-import abc
 import pybullet as pb
-from pybullet_utils import bullet_client
-import pybullet_data
-from typing import Tuple
+from pyvirtualdisplay import Display
 import gym
 import time
-from datetime import datetime
-from gym.envs.registration import register
+import imageio
 import torch
 from phoenix_drone_simulation.algs.model import Model
-from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
+from gym.wrappers import Monitor
 from phoenix_drone_simulation.algs.ppo.ppo import ProximalPolicyOptimizationAlgorithm
 
 # output_dir = data_dir/env-id/algo/YY-MM-DD_HH-MM-SS/seed[seed]
@@ -69,13 +64,24 @@ print("The model is loaded successfully!")
 
 # 4) visualize trained PPO model
 env = gym.make(env_id)
+
+# video setting
+# display = Display(visible=0, size=(1400, 900))
+# display.start()
+# video_filename = 'test_video.mp4'
+# video_writter = imageio.get_writer(video_filename, fps=30)
+
+
 # Important note: PyBullet necessitates to call env.render()
 # before env.reset() to display the GUI!
 env.render() 
+
 while True:
     obs = env.reset()
     done = False
     while not done:
+        # frame = env.render(mode='rgb_array') 
+        # video_writter.append_data(frame)
         obs = torch.as_tensor(obs, dtype=torch.float32)
         action, value, logp = ppo.ac.step(obs)
         obs, reward, done, info = env.step(action)

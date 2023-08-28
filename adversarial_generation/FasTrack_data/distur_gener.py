@@ -107,7 +107,7 @@ def distur_gener(states, disturbance):
 
         dOpt1,dOpt2,dOpt3 = dMax[0],dMax[1],dMax[2]
         dMin = -dMax
-
+        # Joe:
         if spat_deriv[3] > 0:
             dOpt1 = dMin[0]
         if spat_deriv[4] > 0:

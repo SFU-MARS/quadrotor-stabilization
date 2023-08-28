@@ -4,9 +4,7 @@ from gym.envs.registration import register
 from stable_baselines3 import PPO, SAC 
 from stable_baselines3.common.callbacks import CallbackList, CheckpointCallback
 from stable_baselines3.common.env_checker import check_env
-from stable_baselines3.common.noise import ActionNoise, NormalActionNoise
-
-from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
+# from adversaryhover_phoenix import DroneHoverBulletEnvWithAdversary
 from utility import init_env
 from datetime import datetime
 
